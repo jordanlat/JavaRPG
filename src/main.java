@@ -12,7 +12,7 @@ public class main {
 	
 	public static boolean in_fight = false;
 	public static boolean choose = true;
-	
+	public static boolean esquive = false;
 
 	
 	public static void main (String[] args) {
@@ -23,7 +23,7 @@ public class main {
 		trait(10);
 		
 		// Construction du joueur
-		Terminal.ecrireStringln("Bonjour à toi joueur, quel est ton nom ?");
+		Terminal.ecrireStringln("Bonjour Ã  toi joueur, quel est ton nom ?");
 		String pl_name = Terminal.lireString();
 		Terminal.sautDeLigne();
 		Terminal.ecrireStringln("Ravie de te rencontrer " + pl_name + ".");
@@ -38,22 +38,28 @@ public class main {
 		Terminal.sautDeLigne();
 		
 		while(choose == true) {
-			Terminal.ecrireStringln("Que veux tu faire ? (aventure/repos)");
+			Terminal.ecrireStringln("Que veux tu faire ? (aventure/repos/profile)");
 			
 			String choo_rep = Terminal.lireString();
 			
+			// Ajouter la fonction profile
+			
+			if(choo_rep.equals("profile")) {
+				hero.profile();
+			}
+			
 			if(choo_rep.equals("aventure")) {
 				trait(30);
-				Terminal.ecrireStringln("Oh non un individu hostile apparaît !");
+				Terminal.ecrireStringln("Oh non un individu hostile apparaï¿½t !");
 				trait(30);
 				
 				in_fight = true;
 				
-				// Création de l'ennemi
+				// Crï¿½ation de l'ennemi
 				
 				Character bad_guy = new Character();
-				int randomLife = new Random().nextInt(15);
-				int randomAtk = new Random().nextInt(5);
+				int randomLife = new Random().nextInt(25);
+				int randomAtk = new Random().nextInt(15);
 				bad_guy.setLife("un bandit", randomLife, randomAtk);
 				bad_guy.status();
 				
@@ -73,37 +79,47 @@ public class main {
 						Terminal.ecrireStringln("Il lui en reste " + bad_guy.life + " points de vie.");
 						Terminal.sautDeLigne();
 						
+					} else if (fight_rep.equals("esquive")) {
+						
+						esquive = hero.esquive();
+
+						
 					} else if (fight_rep.equalsIgnoreCase("heal")) {
 						if(hero.life >= default_hero_life) {
 							Terminal.sautDeLigne();
-							Terminal.ecrireStringln("Votre santée est déjà au maximum.");
+							Terminal.ecrireStringln("Votre santÃ©e est dÃ©Ã ï¿½ au maximum.");
 							Terminal.sautDeLigne();
 						} else {
 							Terminal.sautDeLigne();
-							Terminal.ecrireStringln("Vous avez été soigné de " + hero.heal() + " points de vie.");
+							Terminal.ecrireStringln("Vous avez ï¿½tï¿½ soignÃ© de " + hero.heal() + " points de vie.");
 							Terminal.ecrireStringln("Mais");
 						}
 						
+					} else {
+						Terminal.sautDeLigne();
+						Terminal.ecrireStringln("Oh non "+ hero.name +",tu as tribucher sur le clavier!");
+						Terminal.sautDeLigne();
 					}
 					
 					
 					// ennemi phase
-					int T_atk_bad_guy = bad_guy.atk * bad_guy.critique();
-					hero.life = hero.life - T_atk_bad_guy;
-					Terminal.ecrireStringln("Vous avez perdu -" + T_atk_bad_guy + " points de vie.");
-					Terminal.ecrireStringln("Il vous en reste "  + hero.life + " points de vie.");
-					Terminal.sautDeLigne();
-					
+					if(esquive == false) {
+						int T_atk_bad_guy = bad_guy.atk * bad_guy.critique();
+						hero.life = hero.life - T_atk_bad_guy;
+						Terminal.ecrireStringln("Vous avez perdu -" + T_atk_bad_guy + " points de vie.");
+						Terminal.ecrireStringln("Il vous en reste "  + hero.life + " points de vie.");
+						Terminal.sautDeLigne();
+					}
 					if(bad_guy.life <= 0 || hero.life <= 0) {
 						
 						if(bad_guy.life <= 0 && hero.life>0) {
 							Terminal.sautDeLigne();
 							trait(40);
-							Terminal.ecrireStringln("Vous avez vaincu l'ennemi ! Félicitation !");
-							Terminal.ecrireStringln("Vous gagnez " + bad_guy.atk_init + " points d'expérience.");
+							Terminal.ecrireStringln("Vous avez vaincu l'ennemi ! FÃ©licitation !");
+							Terminal.ecrireStringln("Vous gagnez " + bad_guy.atk_init + " points d'expÃ©rience.");
 							hero.exp = hero.exp + bad_guy.atk_init;
 							
-							Terminal.ecrireStringln("Vous gagnez " + bad_guy.life_init + " pièces d'or.");
+							Terminal.ecrireStringln("Vous gagnez " + bad_guy.life_init + " piÃ¨ces d'or.");
 							hero.gold = hero.gold + bad_guy.life_init;
 							
 							trait(40);
@@ -111,7 +127,7 @@ public class main {
 						} else if (hero.life<=0 && bad_guy.life>0) {
 							Terminal.sautDeLigne();
 							trait(40);
-							Terminal.ecrireStringln("RIP vous avez mordu la poussière");
+							Terminal.ecrireStringln("RIP vous avez mordu la poussiÃ¨re");
 							hero.life = hero.life_init;
 							trait(40);
 						}
@@ -142,15 +158,15 @@ public class main {
  * 	Le joueur aura:
  *		- un nom
  *		- un niveau + experience
- *		- Dégat
- *		- Défense
+ *		- Dï¿½gat
+ *		- Dï¿½fense
  * 	
  * 	Ensuite il a plusieurs choix  soit :
- * 		- Partir à l'aventure:
+ * 		- Partir ï¿½ l'aventure:
  * 			-choix de la zone par niveau
  * 				- joueur doit ce battre
- * 				- trouve un trésor
- * 				- Rien de spécial
+ * 				- trouve un trï¿½sor
+ * 				- Rien de spï¿½cial
  * 
  * 			- Dans tous les cas il gagne de l'exp
  * 

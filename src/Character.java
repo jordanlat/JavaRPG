@@ -22,13 +22,27 @@ public class Character {
 	}
 	
 	public void status () {
+		Terminal.sautDeLigne();
 		Terminal.ecrireStringln("Je suis " + this.name + " .");
 		Terminal.ecrireStringln("J'ai " + this.life + " point de vie.");
 		Terminal.ecrireStringln("J'ai " + this.atk + " point d'attaque.");
+		Terminal.sautDeLigne();
 	}
 	
+	public void profile() {
+		Terminal.sautDeLigne();
+		Terminal.ecrireStringln("Je suis " + this.name + " .");
+		Terminal.ecrireStringln("J'ai " + this.life + " point de vie.");
+		Terminal.ecrireStringln("J'ai " + this.atk + " point d'attaque.");
+		Terminal.ecrireStringln("J'ai " + this.gold + " pièce d'or.");
+		Terminal.ecrireStringln("J'ai " + this.exp + " point d'expérience.");
+		Terminal.sautDeLigne();
+	}
+	
+	
+	// Action en combat
 	public int heal() {
-		int life_healed = 2;
+		int life_healed = 4;
 		this.life = this.life + 2;
 		
 		return life_healed;
@@ -39,6 +53,17 @@ public class Character {
 		
 		return this.life;
 	}
+
+	public boolean esquive() {
+		int chance = new Random().nextInt(11);
+		
+		if(chance>7) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	
 	public int critique() {
 		// Coup critique
